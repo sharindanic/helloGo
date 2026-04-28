@@ -13,13 +13,21 @@ import (
 
 func init() {
 	// Attempt to read the secret key as an enviroment variable
-	secretKey1 := []byte(os.Getenv("SECRET_KEY_1"))
+	secret := os.Getenv("SECRET_KEY_1")
+	if secret == "" {
+		log.Println("SECRET_KEY_1 is not set")
+		return
+	}
 	// Create a directory for certs
-	os.MkdirAll("./cert", 0700)
-	// Write this key to a file
-	err := ioutil.WriteFile("./cert/secretKey1.pem", secretKey1, 0644)
+	err := os.MkdirAll("./cert", 0700)
 	if err != nil {
-		fmt.Printf("Error writing file: %s", string(secretKey1))
+		log.Println("Error creating directory:", err)
+		return
+	}
+	// Write this key to a file
+	err = os.WriteFile("./cert/secretKey1.pem", []byte(secret), 0644)
+	if err != nil {
+		log.Println("Error writing file:", err)
 	}
 }
 
@@ -52,6 +60,10 @@ func main() {
 
 	// Construct port string
 	portStr := ":" + strconv.Itoa(*portPtr)
-	fmt.Println("Listening port " + portStr)
-	http.ListenAndServe(portStr, r)
+	log.Println("Listening on port", portStr)
+
+	err := http.ListenAndServe(portStr, r)
+	if err != nil {
+		log.Println("Server error:", err)
+	}
 }
