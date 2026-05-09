@@ -1,6 +1,6 @@
 module github.com/akhil/go-fiber-mongo-hrms
 
-go 1.16
+go 1.17
 
 require (
 	github.com/gofiber/fiber/v2 v2.24.0
