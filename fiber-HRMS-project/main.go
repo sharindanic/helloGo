@@ -136,7 +136,6 @@ func main() {
 		}
 
 		employee.ID = idParam
-
 		return c.Status(200).JSON(employee)
 
 	})
@@ -159,7 +158,6 @@ func main() {
 		if result.DeletedCount < 1 {
 			return c.SendStatus(404)
 		}
-
 		return c.Status(200).JSON("record deleted")
 
 	})
